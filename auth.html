@@ -491,25 +491,31 @@
 
         /* Responsive */
         @media (max-width: 968px) {
+            body {
+                overflow: hidden;
+            }
+
             .auth-container {
                 flex-direction: column;
+                height: 100vh;
+                overflow: hidden;
             }
 
+            /* Hide branding side completely on mobile */
             .branding-side {
-                padding: 2rem;
+                display: none;
             }
 
-            .branding-side img {
-                width: 150px;
-                height: 150px;
-            }
-
-            .branding-side h2 {
-                font-size: 1.5rem;
-            }
-
+            /* Make form side full screen */
             .form-side {
-                padding: 2rem;
+                width: 100%;
+                height: 100vh;
+                padding: 2rem 1.5rem;
+                overflow-y: auto;
+            }
+
+            .form-wrapper {
+                max-width: 100%;
             }
 
             /* Hide welcome message on mobile and tablet */
@@ -519,6 +525,11 @@
 
             /* Hide BMS logo on mobile and tablet */
             .bg-logo {
+                display: none;
+            }
+
+            /* Hide branding text on mobile and tablet */
+            .branding-content h2 {
                 display: none;
             }
         }
@@ -806,8 +817,16 @@
                         localStorage.setItem('rememberMe', 'true');
                     }
 
-                    // Redirect to download page
-                    window.location.href = 'pages/download-app.html';
+                    // Check if user is admin and redirect accordingly
+                    const userRole = response.user?.role || response.role;
+
+                    if (userRole === 'admin' || userRole === 'ADMIN' || username === 'official.bms.admin') {
+                        // Redirect admin to admin dashboard
+                        window.location.href = 'pages/admin-dashboard.html';
+                    } else {
+                        // Redirect regular users to download page
+                        window.location.href = 'pages/download-app.html';
+                    }
                 }
             } catch (error) {
                 alert('Login failed: ' + error.message);
