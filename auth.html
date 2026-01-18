@@ -11,12 +11,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/slider-captcha.css">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Cloudflare Turnstile CAPTCHA -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <!-- Custom Slider CAPTCHA -->
+    <script src="js/slider-captcha.js"></script>
 
     <style>
         * {
@@ -699,9 +700,8 @@
                             <a href="pages/forgot-password.html" class="forgot-link">Forgot password?</a>
                         </div>
 
-                        <!-- Cloudflare Turnstile CAPTCHA -->
-                        <div class="cf-turnstile" data-sitekey="0x4AAAAAACNL3-uqJ4Hu4Ns6" data-theme="light"
-                            data-appearance="interaction-only"></div>
+                        <!-- Custom Slider CAPTCHA -->
+                        <div id="login-captcha"></div>
 
                         <button type="submit" class="btn-submit" id="loginBtn" disabled>Sign In</button>
                     </form>
@@ -761,9 +761,8 @@
                             </div>
                         </div>
 
-                        <!-- Cloudflare Turnstile CAPTCHA -->
-                        <div class="cf-turnstile" data-sitekey="0x4AAAAAACNL3-uqJ4Hu4Ns6" data-theme="light"
-                            data-appearance="interaction-only"></div>
+                        <!-- Custom Slider CAPTCHA -->
+                        <div id="register-captcha"></div>
 
                         <button type="submit" class="btn-submit" id="registerBtn" disabled>Create Account</button>
                     </form>
@@ -914,13 +913,9 @@
             const password = document.getElementById('login-password').value;
             const rememberMe = document.getElementById('remember-me').checked;
 
-            // Get CAPTCHA token from Turnstile widget
-            const turnstileElement = document.querySelector('#loginForm .cf-turnstile');
-            const captchaToken = turnstile.getResponse(turnstileElement);
-
-            // Validate CAPTCHA token
-            if (!captchaToken) {
-                alert('Please complete the CAPTCHA verification');
+            // Validate slider CAPTCHA
+            if (!loginCaptcha || !loginCaptcha.isVerified()) {
+                alert('Please complete the CAPTCHA verification by sliding to the target');
                 return;
             }
 
@@ -929,6 +924,8 @@
             btn.innerHTML = 'Signing in<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>';
 
             try {
+                // Send a simple verification token (since it's client-side only)
+                const captchaToken = 'slider-verified-' + Date.now();
                 const response = await api.login(username, password, captchaToken);
 
                 if (response.success) {
@@ -952,7 +949,7 @@
                 btn.disabled = false;
                 btn.textContent = 'Sign In';
                 // Reset CAPTCHA
-                turnstile.reset(turnstileElement);
+                loginCaptcha.reset();
             }
         });
 
@@ -970,13 +967,9 @@
                 return;
             }
 
-            // Get CAPTCHA token from Turnstile widget
-            const turnstileElement = document.querySelector('#registerForm .cf-turnstile');
-            const captchaToken = turnstile.getResponse(turnstileElement);
-
-            // Validate CAPTCHA token
-            if (!captchaToken) {
-                alert('Please complete the CAPTCHA verification');
+            // Validate slider CAPTCHA
+            if (!registerCaptcha || !registerCaptcha.isVerified()) {
+                alert('Please complete the CAPTCHA verification by sliding to the target');
                 return;
             }
 
@@ -985,6 +978,8 @@
             btn.innerHTML = 'Creating account<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>';
 
             try {
+                // Send a simple verification token (since it's client-side only)
+                const captchaToken = 'slider-verified-' + Date.now();
                 const response = await api.register(username, email, password, captchaToken);
 
                 if (response.success) {
@@ -996,11 +991,17 @@
                 btn.disabled = false;
                 btn.textContent = 'Create Account';
                 // Reset CAPTCHA
-                turnstile.reset(turnstileElement);
+                registerCaptcha.reset();
             }
         });
 
-        // Initialize Lucide icons
+        // Initialize custom slider CAPTCHAs
+        let loginCaptcha, registerCaptcha;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loginCaptcha = new SliderCaptcha('login-captcha');
+            registerCaptcha = new SliderCaptcha('register-captcha');
+        });
         lucide.createIcons();
 
         // Function to switch between login and register forms
