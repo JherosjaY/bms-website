@@ -64,7 +64,8 @@
 .slider-captcha-handle {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 50px;
     height: 50px;
     background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
