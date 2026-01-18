@@ -1411,6 +1411,13 @@
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             headerNav.classList.toggle('active');
+
+            // Disable/enable body scroll when sidebar is open/closed
+            if (headerNav.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         });
 
         // Close menu when clicking on a link
@@ -1418,6 +1425,7 @@
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 headerNav.classList.remove('active');
+                document.body.style.overflow = '';
             });
         });
 
@@ -1426,7 +1434,23 @@
             if (!hamburger.contains(e.target) && !headerNav.contains(e.target)) {
                 hamburger.classList.remove('active');
                 headerNav.classList.remove('active');
+                document.body.style.overflow = '';
             }
+        });
+
+        // Auto-close sidebar when scrolling to top
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // If scrolled to top (within 50px) and sidebar is open
+            if (scrollTop < 50 && headerNav.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                headerNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            lastScrollTop = scrollTop;
         });
     </script>
 </body>
