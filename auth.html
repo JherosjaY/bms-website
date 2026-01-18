@@ -491,18 +491,28 @@
 
         /* Responsive */
         @media (max-width: 968px) {
+
+            html,
             body {
                 overflow: hidden;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
                 background: white;
             }
 
             .auth-container {
-                flex-direction: column;
-                height: 100vh;
+                position: fixed;
+                top: 0;
+                left: 0;
                 width: 100vw;
+                height: 100vh;
                 overflow: hidden;
                 background: white;
                 border-radius: 0;
+                flex-direction: column;
             }
 
             /* Hide branding side completely on mobile */
@@ -510,12 +520,15 @@
                 display: none !important;
             }
 
-            /* Make form side full screen */
+            /* Make form side full screen and centered */
             .form-side {
-                width: 100% !important;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw !important;
                 height: 100vh;
-                padding: 1.5rem;
-                overflow-y: auto;
+                padding: 0;
+                overflow: hidden;
                 background: white;
                 display: flex;
                 align-items: center;
@@ -525,13 +538,17 @@
             .form-wrapper {
                 max-width: 100%;
                 width: 100%;
-                padding: 0;
+                max-height: 100vh;
+                overflow-y: auto;
+                padding: 1.5rem;
+                box-sizing: border-box;
             }
 
             .form-container {
                 padding: 1.5rem;
                 border-radius: 16px;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                background: white;
             }
 
             .form-container h2 {
