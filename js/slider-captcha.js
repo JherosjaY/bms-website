@@ -8,14 +8,14 @@ class SliderCaptcha {
     }
 
     init() {
-        // Generate random target position (60-80% of slider width)
+        // Generate random target position (60-80% of available sliding area)
         this.targetPosition = Math.floor(Math.random() * 20 + 60);
 
         // Create HTML structure
         this.container.innerHTML = `
             <div class="slider-captcha">
                 <div class="slider-captcha-track">
-                    <div class="slider-captcha-target" style="left: ${this.targetPosition}%"></div>
+                    <div class="slider-captcha-target"></div>
                     <div class="slider-captcha-fill"></div>
                 </div>
                 <div class="slider-captcha-handle" draggable="false">
@@ -35,7 +35,23 @@ class SliderCaptcha {
         this.status = this.container.querySelector('.slider-captcha-status');
         this.target = this.container.querySelector('.slider-captcha-target');
 
+        // Position target after elements are created
+        this.positionTarget();
+
         this.setupEvents();
+    }
+
+    positionTarget() {
+        // Calculate target position based on available sliding area (not full track width)
+        const trackWidth = this.track.offsetWidth;
+        const handleWidth = this.handle.offsetWidth;
+        const maxX = trackWidth - handleWidth;
+
+        // Target position in pixels
+        const targetPixels = (this.targetPosition / 100) * maxX;
+
+        // Position target line (accounting for handle center)
+        this.target.style.left = (targetPixels + (handleWidth / 2)) + 'px';
     }
 
     setupEvents() {
@@ -76,9 +92,10 @@ class SliderCaptcha {
             this.fill.style.width = newX + 'px';
 
             // Visual feedback when near target
-            const targetPixels = (this.targetPosition / 100) * trackWidth;
+            const targetPixels = (this.targetPosition / 100) * maxX;
             const handleCenter = newX + (handleWidth / 2);
-            const distance = Math.abs(handleCenter - targetPixels);
+            const targetCenter = targetPixels + (handleWidth / 2);
+            const distance = Math.abs(handleCenter - targetCenter);
 
             if (distance < 30) {
                 this.target.classList.add('near');
@@ -97,11 +114,13 @@ class SliderCaptcha {
             const handleRect = this.handle.getBoundingClientRect();
             const trackRect = this.track.getBoundingClientRect();
             const currentX = handleRect.left - trackRect.left;
+            const maxX = trackWidth - handleWidth;
 
             // Calculate target position in pixels
-            const targetPixels = (this.targetPosition / 100) * trackWidth;
+            const targetPixels = (this.targetPosition / 100) * maxX;
             const handleCenter = currentX + (handleWidth / 2);
-            const distance = Math.abs(handleCenter - targetPixels);
+            const targetCenter = targetPixels + (handleWidth / 2);
+            const distance = Math.abs(handleCenter - targetCenter);
 
             // Check if slider is close enough to target (increased tolerance)
             if (distance <= 15) {
@@ -187,7 +206,7 @@ class SliderCaptcha {
 
         // Generate new random position
         this.targetPosition = Math.floor(Math.random() * 20 + 60);
-        this.target.style.left = this.targetPosition + '%';
+        this.positionTarget();
     }
 }
 
