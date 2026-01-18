@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Email Verification - Blotter Management System</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -290,10 +290,88 @@
             color: var(--primary);
         }
 
-        /* Hide BMS logo on mobile and tablet */
-        @media (max-width: 1024px) {
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            * {
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+            }
+
+            html {
+                overflow: hidden;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                -webkit-text-size-adjust: 100%;
+                touch-action: manipulation;
+            }
+
+            body {
+                overflow: hidden;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                background: #f8fafc;
+                touch-action: manipulation;
+            }
+
+            .verification-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                background: #f8fafc;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+                box-sizing: border-box;
+                touch-action: manipulation;
+            }
+
+            .verification-box {
+                width: 100%;
+                max-width: 100%;
+                padding: 2rem 1.5rem;
+                margin: 0;
+            }
+
+            .verification-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .verification-header p {
+                font-size: 0.875rem;
+            }
+
+            .code-input {
+                width: 45px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .btn {
+                padding: 0.875rem;
+            }
+
+            /* Hide BMS logo on mobile and tablet */
             .bg-logo {
                 display: none;
+            }
+
+            /* Prevent zoom on input focus */
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            select,
+            textarea {
+                font-size: 16px !important;
+                touch-action: manipulation;
             }
         }
     </style>
