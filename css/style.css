@@ -575,11 +575,34 @@ select {
 
 /* Responsive */
 @media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
   html {
     font-size: 14px;
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+  }
+
+  body {
+    touch-action: manipulation;
   }
 
   .container {
     padding: 0 var(--space-md);
+  }
+
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  select,
+  textarea,
+  .input {
+    font-size: 16px !important;
+    touch-action: manipulation;
   }
 }
