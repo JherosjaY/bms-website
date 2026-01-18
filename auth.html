@@ -761,8 +761,6 @@
                             </div>
                         </div>
 
-                        <!-- Custom Slider CAPTCHA -->
-                        <div id="register-captcha"></div>
 
                         <button type="submit" class="btn-submit" id="registerBtn" disabled>Create Account</button>
                     </form>
@@ -967,20 +965,13 @@
                 return;
             }
 
-            // Validate slider CAPTCHA
-            if (!registerCaptcha || !registerCaptcha.isVerified()) {
-                alert('Please complete the CAPTCHA verification by sliding to the target');
-                return;
-            }
-
             const btn = e.target.querySelector('.btn-submit');
             btn.disabled = true;
             btn.innerHTML = 'Creating account<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>';
 
             try {
-                // Send a simple verification token (since it's client-side only)
-                const captchaToken = 'slider-verified-' + Date.now();
-                const response = await api.register(username, email, password, captchaToken);
+                // No CAPTCHA required for registration
+                const response = await api.register(username, email, password, 'no-captcha');
 
                 if (response.success) {
                     // Redirect to email verification page
@@ -990,17 +981,14 @@
                 alert('Registration failed: ' + error.message);
                 btn.disabled = false;
                 btn.textContent = 'Create Account';
-                // Reset CAPTCHA
-                registerCaptcha.reset();
             }
         });
 
-        // Initialize custom slider CAPTCHAs
-        let loginCaptcha, registerCaptcha;
+        // Initialize custom slider CAPTCHA (login only)
+        let loginCaptcha;
 
         document.addEventListener('DOMContentLoaded', () => {
             loginCaptcha = new SliderCaptcha('login-captcha');
-            registerCaptcha = new SliderCaptcha('register-captcha');
         });
         lucide.createIcons();
 
