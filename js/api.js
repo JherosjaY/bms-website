@@ -52,10 +52,10 @@ class APIClient {
   }
 
   // Auth endpoints
-  async login(username, password) {
+  async login(username, password, captchaToken) {
     const data = await this.request('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, password, captchaToken }),
     });
 
     if (data.success && data.data.token) {
@@ -65,10 +65,10 @@ class APIClient {
     return data;
   }
 
-  async register(username, email, password) {
+  async register(username, email, password, captchaToken) {
     return this.request('/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({ username, email, password, captchaToken }),
     });
   }
 

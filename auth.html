@@ -700,7 +700,7 @@
                         </div>
 
                         <!-- Cloudflare Turnstile CAPTCHA -->
-                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAAAmc2J-uq2fHsx4foz6" data-theme="light"></div>
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAACNL3-uqJ4Hu4Ns6" data-theme="light"></div>
 
                         <button type="submit" class="btn-submit" id="loginBtn" disabled>Sign In</button>
                     </form>
@@ -761,7 +761,7 @@
                         </div>
 
                         <!-- Cloudflare Turnstile CAPTCHA -->
-                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAAAmc2J-uq2fHsx4foz6" data-theme="light"></div>
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAACNL3-uqJ4Hu4Ns6" data-theme="light"></div>
 
                         <button type="submit" class="btn-submit" id="registerBtn" disabled>Create Account</button>
                     </form>
@@ -912,12 +912,22 @@
             const password = document.getElementById('login-password').value;
             const rememberMe = document.getElementById('remember-me').checked;
 
+            // Get CAPTCHA token from Turnstile widget
+            const turnstileElement = document.querySelector('#loginForm .cf-turnstile');
+            const captchaToken = turnstile.getResponse(turnstileElement);
+
+            // Validate CAPTCHA token
+            if (!captchaToken) {
+                alert('Please complete the CAPTCHA verification');
+                return;
+            }
+
             const btn = e.target.querySelector('.btn-submit');
             btn.disabled = true;
             btn.innerHTML = 'Signing in<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>';
 
             try {
-                const response = await api.login(username, password);
+                const response = await api.login(username, password, captchaToken);
 
                 if (response.success) {
                     if (rememberMe) {
@@ -939,6 +949,8 @@
                 alert('Login failed: ' + error.message);
                 btn.disabled = false;
                 btn.textContent = 'Sign In';
+                // Reset CAPTCHA
+                turnstile.reset(turnstileElement);
             }
         });
 
@@ -956,12 +968,22 @@
                 return;
             }
 
+            // Get CAPTCHA token from Turnstile widget
+            const turnstileElement = document.querySelector('#registerForm .cf-turnstile');
+            const captchaToken = turnstile.getResponse(turnstileElement);
+
+            // Validate CAPTCHA token
+            if (!captchaToken) {
+                alert('Please complete the CAPTCHA verification');
+                return;
+            }
+
             const btn = e.target.querySelector('.btn-submit');
             btn.disabled = true;
             btn.innerHTML = 'Creating account<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>';
 
             try {
-                const response = await api.register(username, email, password);
+                const response = await api.register(username, email, password, captchaToken);
 
                 if (response.success) {
                     // Redirect to email verification page
@@ -971,6 +993,8 @@
                 alert('Registration failed: ' + error.message);
                 btn.disabled = false;
                 btn.textContent = 'Create Account';
+                // Reset CAPTCHA
+                turnstile.reset(turnstileElement);
             }
         });
 
