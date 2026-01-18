@@ -41,12 +41,19 @@ class SliderCaptcha {
     setupEvents() {
         let isDragging = false;
         let startX = 0;
-        let currentX = 0;
+        let handleStartX = 0;
 
         const onStart = (e) => {
             if (this.verified) return;
             isDragging = true;
-            startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            startX = clientX;
+
+            // Get current handle position
+            const handleRect = this.handle.getBoundingClientRect();
+            const trackRect = this.track.getBoundingClientRect();
+            handleStartX = handleRect.left - trackRect.left;
+
             this.handle.classList.add('dragging');
             this.text.textContent = 'Keep sliding...';
         };
@@ -61,17 +68,19 @@ class SliderCaptcha {
             const handleWidth = this.handle.offsetWidth;
             const maxX = trackWidth - handleWidth;
 
-            currentX = Math.max(0, Math.min(deltaX, maxX));
-            const percentage = (currentX / maxX) * 100;
+            // Calculate new position
+            let newX = handleStartX + deltaX;
+            newX = Math.max(0, Math.min(newX, maxX));
 
-            this.handle.style.left = currentX + 'px';
-            this.fill.style.width = currentX + 'px';
+            this.handle.style.left = newX + 'px';
+            this.fill.style.width = newX + 'px';
 
             // Visual feedback when near target
-            const targetPixels = (this.targetPosition / 100) * maxX;
-            const distance = Math.abs(currentX - targetPixels);
+            const targetPixels = (this.targetPosition / 100) * trackWidth;
+            const handleCenter = newX + (handleWidth / 2);
+            const distance = Math.abs(handleCenter - targetPixels);
 
-            if (distance < 20) {
+            if (distance < 30) {
                 this.target.classList.add('near');
             } else {
                 this.target.classList.remove('near');
@@ -85,13 +94,17 @@ class SliderCaptcha {
 
             const trackWidth = this.track.offsetWidth;
             const handleWidth = this.handle.offsetWidth;
-            const maxX = trackWidth - handleWidth;
-            const percentage = (currentX / maxX) * 100;
-            const targetPixels = (this.targetPosition / 100) * maxX;
-            const distance = Math.abs(currentX - targetPixels);
+            const handleRect = this.handle.getBoundingClientRect();
+            const trackRect = this.track.getBoundingClientRect();
+            const currentX = handleRect.left - trackRect.left;
 
-            // Check if slider is close enough to target
-            if (distance <= this.tolerance) {
+            // Calculate target position in pixels
+            const targetPixels = (this.targetPosition / 100) * trackWidth;
+            const handleCenter = currentX + (handleWidth / 2);
+            const distance = Math.abs(handleCenter - targetPixels);
+
+            // Check if slider is close enough to target (increased tolerance)
+            if (distance <= 15) {
                 this.onSuccess();
             } else {
                 this.onFail();
