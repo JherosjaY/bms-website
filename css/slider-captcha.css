@@ -63,7 +63,7 @@
 
 .slider-captcha-handle {
     position: absolute;
-    left: 0;
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
     width: 40px;
