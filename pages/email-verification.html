@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - Blotter Management System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Effects */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Background Logo */
+        .bg-logo {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.3s;
+        }
+
+        .bg-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .bg-logo img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .bg-logo span {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Main Container */
+        .verify-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Email Icon */
+        .email-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: scaleIn 0.5s ease 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .email-icon i {
+            color: white;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #475569;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .email-display {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Verification Code Input */
+        .code-inputs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .code-input {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f1f5f9;
+            color: #0f172a;
+            transition: all 0.3s;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .code-input:disabled {
+            opacity: 0.7;
+            background: #cbd5e1;
+            cursor: not-allowed;
+            border-color: #94a3b8;
+            border-width: 2px;
+        }
+
+        /* Buttons */
+        .btn-verify {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-verify:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-verify:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Spam Warning */
+        .spam-warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .spam-warning-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .spam-warning-text {
+            font-size: 0.875rem;
+            color: #78350f;
+            line-height: 1.5;
+        }
+
+        /* Resend Link */
+        .resend-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .resend-link {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .resend-link:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+
+        .resend-link.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Timer */
+        .timer {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Hide BMS logo on mobile and tablet */
+        @media (max-width: 1024px) {
+            .bg-logo {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Logo -->
+    <a href="../index.html" class="bg-logo">
+        <img src="../assets/app-icon.png" alt="BMS">
+        <span>BMS</span>
+    </a>
+
+    <!-- Main Container -->
+    <div class="verify-container">
+        <!-- Email Icon -->
+        <div class="email-icon">
+            <i data-lucide="mail" style="width: 40px; height: 40px;"></i>
+        </div>
+
+        <!-- Heading -->
+        <h1>Verify Your Email</h1>
+        <p class="subtitle">
+            We've sent a 6-digit verification code to<br>
+            <span class="email-display" id="userEmail">your@email.com</span>
+        </p>
+
+        <!-- Spam Warning -->
+        <div class="spam-warning">
+            <div class="spam-warning-title">
+                <i data-lucide="alert-triangle" style="width: 20px; height: 20px;"></i>
+                Can't find the email?
+            </div>
+            <div class="spam-warning-text">
+                Please check your <strong>SPAM</strong> or <strong>Junk</strong> folder. Sometimes verification emails
+                end up there.
+            </div>
+        </div>
+
+        <!-- Verification Code Inputs -->
+        <div class="code-inputs">
+            <input type="text" maxlength="1" class="code-input" id="code1" autocomplete="off" disabled>
+            <input type="text" maxlength="1" class="code-input" id="code2" autocomplete="off" disabled>
+            <input type="text" maxlength="1" class="code-input" id="code3" autocomplete="off" disabled>
+            <input type="text" maxlength="1" class="code-input" id="code4" autocomplete="off" disabled>
+            <input type="text" maxlength="1" class="code-input" id="code5" autocomplete="off" disabled>
+            <input type="text" maxlength="1" class="code-input" id="code6" autocomplete="off" disabled>
+        </div>
+
+        <!-- Send/Verify Button -->
+        <button class="btn-verify" id="verifyBtn">Send</button>
+
+        <!-- Resend Section -->
+        <div class="resend-section" id="resendSection" style="display: none;">
+            You can resend <span id="timerText" style="color: #10b981; font-weight: 700;"></span> code.
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Get email from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email') || 'your@email.com';
+
+        // Function to mask email address
+        function maskEmail(email) {
+            const [username, domain] = email.split('@');
+            if (username.length <= 2) {
+                return `${username[0]}***@${domain}`;
+            }
+            const visibleStart = username.substring(0, 2);
+            const visibleEnd = username.substring(username.length - 2);
+            const maskedPart = '*'.repeat(Math.min(username.length - 4, 5));
+            return `${visibleStart}${maskedPart}${visibleEnd}@${domain}`;
+        }
+
+        document.getElementById('userEmail').textContent = maskEmail(email);
+
+        // Code inputs auto-focus and validation
+        const codeInputs = document.querySelectorAll('.code-input');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const resendSection = document.getElementById('resendSection');
+        const timerText = document.getElementById('timerText');
+
+        let codeSent = false;
+        let resendTimer = 60;
+        let timerInterval = null;
+
+        codeInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+
+                // Only allow numbers
+                if (!/^\d$/.test(value)) {
+                    e.target.value = '';
+                    return;
+                }
+
+                // Auto-focus next input
+                if (value && index < codeInputs.length - 1) {
+                    codeInputs[index + 1].focus();
+                }
+
+                // Check if all inputs are filled
+                checkAllInputsFilled();
+            });
+
+            input.addEventListener('keydown', (e) => {
+                // Handle backspace
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    codeInputs[index - 1].focus();
+                }
+            });
+
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text').slice(0, 6);
+                const digits = pastedData.match(/\d/g);
+
+                if (digits) {
+                    digits.forEach((digit, i) => {
+                        if (codeInputs[i]) {
+                            codeInputs[i].value = digit;
+                        }
+                    });
+                    checkAllInputsFilled();
+                }
+            });
+        });
+
+        function checkAllInputsFilled() {
+            const allFilled = Array.from(codeInputs).every(input => input.value);
+            verifyBtn.disabled = !allFilled || !codeSent;
+        }
+
+        function startResendTimer() {
+            resendSection.style.display = 'block';
+            resendTimer = 60;
+
+            timerInterval = setInterval(() => {
+                resendTimer--;
+                timerText.textContent = `(${resendTimer} seconds)`;
+
+                if (resendTimer <= 0) {
+                    clearInterval(timerInterval);
+                    resendSection.style.display = 'none';
+                }
+            }, 1000);
+        }
+
+        // Send/Verify button click
+        verifyBtn.addEventListener('click', async () => {
+            if (!codeSent) {
+                // Send code
+                verifyBtn.disabled = true;
+                verifyBtn.textContent = 'Sending...';
+
+                try {
+                    const response = await api.resendCode(email);
+
+                    if (response.success) {
+                        // Enable inputs
+                        codeInputs.forEach(input => input.disabled = false);
+                        codeInputs[0].focus();
+
+                        // Change button
+                        verifyBtn.textContent = 'Verify Email';
+                        verifyBtn.disabled = true;
+                        codeSent = true;
+
+                        // Start timer
+                        startResendTimer();
+                    } else {
+                        alert('Failed to send code. Please try again.');
+                        verifyBtn.disabled = false;
+                        verifyBtn.textContent = 'Send';
+                    }
+                } catch (error) {
+                    alert('Failed to send code: ' + error.message);
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Send';
+                }
+            } else {
+                // Verify code
+                const code = Array.from(codeInputs).map(input => input.value).join('');
+
+                verifyBtn.disabled = true;
+                verifyBtn.textContent = 'Verifying...';
+
+                try {
+                    const response = await api.verifyEmail(email, code);
+
+                    if (response.success) {
+                        // Redirect to download page
+                        window.location.href = 'download-app.html?registered=true';
+                    } else {
+                        alert('Invalid verification code. Please try again.');
+                        codeInputs.forEach(input => input.value = '');
+                        codeInputs[0].focus();
+                        verifyBtn.disabled = true;
+                        verifyBtn.textContent = 'Verify Email';
+                    }
+                } catch (error) {
+                    alert('Verification failed: ' + error.message);
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Verify Email';
+                }
+            }
+        });
+
+        // Focus first input on load (but it's disabled initially)
+        // Don't start timer on page load anymore
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Download Blotter Management System Android App">
+    <title>Download App - Blotter Management System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Gradient Effects */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
+            }
+        }
+
+
+        /* Main Container */
+        .download-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .download-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .download-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .download-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .download-container::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Success Icon */
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: scaleIn 0.5s ease 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-icon i {
+            color: white;
+        }
+
+        /* Headings */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: #475569;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Download Button */
+        .download-section {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        .download-btn i {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .version-info {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        /* Instructions */
+        .instructions {
+            text-align: left;
+            margin: 2rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .instructions::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .instructions::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .instructions::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .instructions::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        .instructions h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-desc {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature {
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .feature i {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-text {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        /* Footer Links */
+        .footer-links {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .download-container {
+                padding: 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Confetti Burst Animation - Party Popper Style! 🎉 */
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            top: 50%;
+            left: 50%;
+            border-radius: 3px;
+            z-index: 0;
+        }
+
+        @keyframes burst1 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(300px, -200px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst2 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-300px, -200px) rotate(-720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst3 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(250px, 150px) rotate(540deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst4 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-250px, 150px) rotate(-540deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst5 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(400px, 0) rotate(900deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst6 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-400px, 0) rotate(-900deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst7 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(200px, -300px) rotate(600deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst8 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-200px, -300px) rotate(-600deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst9 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(350px, 100px) rotate(1080deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst10 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-350px, 100px) rotate(-1080deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst11 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(150px, -250px) rotate(450deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst12 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-150px, -250px) rotate(-450deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst13 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(300px, 200px) rotate(800deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst14 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-300px, 200px) rotate(-800deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst15 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(100px, -350px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst16 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-100px, -350px) rotate(-720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst17 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(380px, -100px) rotate(960deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst18 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-380px, -100px) rotate(-960deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst19 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(280px, 250px) rotate(540deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes burst20 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-280px, 250px) rotate(-540deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti:nth-child(1) {
+            background: #ff6b6b;
+            animation: burst1 1.5s ease-out infinite;
+        }
+
+        .confetti:nth-child(2) {
+            background: #4ecdc4;
+            animation: burst2 1.5s ease-out 0.05s infinite;
+        }
+
+        .confetti:nth-child(3) {
+            background: #45b7d1;
+            animation: burst3 1.5s ease-out 0.1s infinite;
+        }
+
+        .confetti:nth-child(4) {
+            background: #f9ca24;
+            animation: burst4 1.5s ease-out 0.15s infinite;
+        }
+
+        .confetti:nth-child(5) {
+            background: #6c5ce7;
+            animation: burst5 1.5s ease-out 0.2s infinite;
+        }
+
+        .confetti:nth-child(6) {
+            background: #a29bfe;
+            animation: burst6 1.5s ease-out 0.25s infinite;
+        }
+
+        .confetti:nth-child(7) {
+            background: #fd79a8;
+            animation: burst7 1.5s ease-out 0.3s infinite;
+        }
+
+        .confetti:nth-child(8) {
+            background: #fdcb6e;
+            animation: burst8 1.5s ease-out 0.35s infinite;
+        }
+
+        .confetti:nth-child(9) {
+            background: #e17055;
+            animation: burst9 1.5s ease-out 0.4s infinite;
+        }
+
+        .confetti:nth-child(10) {
+            background: #00b894;
+            animation: burst10 1.5s ease-out 0.45s infinite;
+        }
+
+        .confetti:nth-child(11) {
+            background: #0984e3;
+            animation: burst11 1.5s ease-out 0.5s infinite;
+        }
+
+        .confetti:nth-child(12) {
+            background: #6c5ce7;
+            animation: burst12 1.5s ease-out 0.55s infinite;
+        }
+
+        .confetti:nth-child(13) {
+            background: #ff7675;
+            animation: burst13 1.5s ease-out 0.6s infinite;
+        }
+
+        .confetti:nth-child(14) {
+            background: #74b9ff;
+            animation: burst14 1.5s ease-out 0.65s infinite;
+        }
+
+        .confetti:nth-child(15) {
+            background: #a29bfe;
+            animation: burst15 1.5s ease-out 0.7s infinite;
+        }
+
+        .confetti:nth-child(16) {
+            background: #ffeaa7;
+            animation: burst16 1.5s ease-out 0.75s infinite;
+        }
+
+        .confetti:nth-child(17) {
+            background: #55efc4;
+            animation: burst17 1.5s ease-out 0.8s infinite;
+        }
+
+        .confetti:nth-child(18) {
+            background: #fab1a0;
+            animation: burst18 1.5s ease-out 0.85s infinite;
+        }
+
+        .confetti:nth-child(19) {
+            background: #ff6b6b;
+            animation: burst19 1.5s ease-out 0.9s infinite;
+        }
+
+        .confetti:nth-child(20) {
+            background: #4ecdc4;
+            animation: burst20 1.5s ease-out 0.95s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Confetti -->
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+
+    <!-- Main Container -->
+    <div class="download-container">
+        <!-- Success Icon -->
+        <div class="success-icon">
+            <i data-lucide="check" style="width: 50px; height: 50px;"></i>
+        </div>
+
+        <!-- Heading -->
+        <h1>Account Created!</h1>
+        <p class="subtitle">
+            Welcome to the Blotter Management System! Your account has been successfully created.
+            Download our Android app to start managing cases efficiently.
+        </p>
+
+        <!-- Download Section -->
+        <div class="download-section">
+            <a href="https://github.com/JherosjaY/BMS-Android/releases/download/v1.0.0/B.M.S.apk" class="download-btn"
+                id="downloadBtn">
+                <i data-lucide="download" style="width: 24px; height: 24px;"></i>
+                Download Android App
+            </a>
+            <div class="version-info">
+                Version 1.0.0 • Latest Release • 150 MB
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="feature">
+                <i data-lucide="shield-check" style="width: 32px; height: 32px;"></i>
+                <div class="feature-text">Secure</div>
+            </div>
+            <div class="feature">
+                <i data-lucide="zap" style="width: 32px; height: 32px;"></i>
+                <div class="feature-text">Fast</div>
+            </div>
+            <div class="feature">
+                <i data-lucide="smartphone" style="width: 32px; height: 32px;"></i>
+                <div class="feature-text">Mobile-First</div>
+            </div>
+            <div class="feature">
+                <i data-lucide="clock" style="width: 32px; height: 32px;"></i>
+                <div class="feature-text">Real-time</div>
+            </div>
+        </div>
+
+        <!-- Installation Instructions -->
+        <div class="instructions">
+            <h3>
+                <i data-lucide="info" style="width: 20px; height: 20px;"></i>
+                Installation Instructions
+            </h3>
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Enable Unknown Sources</div>
+                    <div class="step-desc">Go to Settings → Security → Enable "Unknown Sources"</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Download APK</div>
+                    <div class="step-desc">Click the download button above to get the APK file</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Install App</div>
+                    <div class="step-desc">Open the downloaded file and tap "Install"</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Login & Start</div>
+                    <div class="step-desc">Use your registered credentials to login</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="footer-links">
+            <a href="../auth.html" class="footer-link">
+                <i data-lucide="log-in" style="width: 16px; height: 16px;"></i>
+                Back to Login
+            </a>
+            <a href="../index.html" class="footer-link">
+                <i data-lucide="home" style="width: 16px; height: 16px;"></i>
+                Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // TODO: Update this URL with your actual APK download link
+        // Options:
+        // 1. GitHub Releases: https://github.com/username/repo/releases/download/v1.0/app.apk
+        // 2. Google Drive: https://drive.google.com/uc?export=download&id=FILE_ID
+        // 3. Your own server: https://yourdomain.com/downloads/bms.apk
+
+        const APK_DOWNLOAD_URL = 'https://github.com/JherosjaY/BMS-Android/releases/download/v1.0.0/B.M.S.apk';
+
+        document.getElementById('downloadBtn').addEventListener('click', function (e) {
+            if (APK_DOWNLOAD_URL === 'YOUR_APK_DOWNLOAD_LINK_HERE') {
+                e.preventDefault();
+                alert('Please update the APK download URL in download-app.html');
+            } else {
+                // Track download (optional)
+                console.log('APK download started');
+            }
+        });
+
+        // Check if coming from registration
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromRegister = urlParams.get('registered');
+
+        if (fromRegister === 'true') {
+            // Could show additional welcome message or confetti animation
+            console.log('New user registered!');
+        }
+    </script>
+</body>
+
+</html>
