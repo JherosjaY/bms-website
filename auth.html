@@ -493,6 +493,7 @@
         @media (max-width: 968px) {
             * {
                 -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
             }
 
             html {
@@ -501,6 +502,7 @@
                 width: 100%;
                 height: 100%;
                 -webkit-text-size-adjust: 100%;
+                touch-action: manipulation;
             }
 
             body {
@@ -511,6 +513,7 @@
                 margin: 0;
                 padding: 0;
                 background: #f8fafc;
+                touch-action: manipulation;
             }
 
             .auth-container {
@@ -523,6 +526,7 @@
                 background: #f8fafc;
                 border-radius: 0;
                 flex-direction: column;
+                touch-action: manipulation;
             }
 
             /* Hide branding side completely on mobile */
@@ -544,6 +548,7 @@
                 -webkit-overflow-scrolling: touch;
                 background: #f8fafc;
                 display: block;
+                touch-action: manipulation;
             }
 
             .form-wrapper {
@@ -568,6 +573,16 @@
 
             .form-container p {
                 font-size: 0.9375rem;
+            }
+
+            /* Prevent zoom on input focus */
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            select,
+            textarea {
+                font-size: 16px !important;
+                touch-action: manipulation;
             }
 
             /* Hide welcome message on mobile and tablet */
