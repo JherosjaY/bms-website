@@ -60,7 +60,7 @@ class SliderCaptcha {
         let handleStartX = 0;
 
         const onStart = (e) => {
-            if (this.verified) return;
+            if (this.verified || this.disabled) return;
             isDragging = true;
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             startX = clientX;
@@ -193,6 +193,24 @@ class SliderCaptcha {
 
     isVerified() {
         return this.verified;
+    }
+
+    setDisabled(disabled) {
+        this.disabled = disabled;
+
+        if (disabled) {
+            this.container.classList.add('disabled');
+            this.handle.style.cursor = 'not-allowed';
+            this.text.textContent = 'Fill in username and password first';
+            this.text.style.color = '#64748b';
+        } else {
+            this.container.classList.remove('disabled');
+            this.handle.style.cursor = 'grab';
+            if (!this.verified) {
+                this.text.textContent = 'Slide to verify';
+                this.text.style.color = '';
+            }
+        }
     }
 
     reset() {

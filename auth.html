@@ -989,6 +989,27 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             loginCaptcha = new SliderCaptcha('login-captcha');
+
+            // Disable CAPTCHA initially
+            loginCaptcha.setDisabled(true);
+
+            // Enable CAPTCHA only when username and password are filled
+            const loginUsername = document.getElementById('login-username');
+            const loginPassword = document.getElementById('login-password');
+
+            const checkLoginFields = () => {
+                const username = loginUsername.value.trim();
+                const password = loginPassword.value.trim();
+
+                if (username && password) {
+                    loginCaptcha.setDisabled(false);
+                } else {
+                    loginCaptcha.setDisabled(true);
+                }
+            };
+
+            loginUsername.addEventListener('input', checkLoginFields);
+            loginPassword.addEventListener('input', checkLoginFields);
         });
         lucide.createIcons();
 

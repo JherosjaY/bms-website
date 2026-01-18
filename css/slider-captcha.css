@@ -6,6 +6,11 @@
     user-select: none;
 }
 
+.slider-captcha.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .slider-captcha-track {
     position: relative;
     width: 100%;
