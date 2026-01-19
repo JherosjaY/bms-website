@@ -999,6 +999,34 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
+        // Force visibility of features and footer on mobile
+        window.addEventListener('DOMContentLoaded', function () {
+            // Re-initialize icons after DOM load
+            setTimeout(() => {
+                lucide.createIcons();
+
+                // Force visibility
+                const features = document.querySelector('.features');
+                const footer = document.querySelector('.footer-links');
+
+                if (features) {
+                    features.style.display = 'grid';
+                    features.style.visibility = 'visible';
+                }
+
+                if (footer) {
+                    footer.style.display = 'flex';
+                    footer.style.visibility = 'visible';
+                }
+
+                // Force all icons to be visible
+                document.querySelectorAll('[data-lucide]').forEach(icon => {
+                    icon.style.display = 'inline-block';
+                    icon.style.visibility = 'visible';
+                });
+            }, 100);
+        });
+
         // TODO: Update this URL with your actual APK download link
         // Options:
         // 1. GitHub Releases: https://github.com/username/repo/releases/download/v1.0/app.apk
