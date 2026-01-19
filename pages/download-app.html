@@ -1021,12 +1021,17 @@
                     footer.style.visibility = 'visible';
                 }
 
-                // Force all icons to be visible with blue color
+                // Force all icons to be visible with blue color (except check icon)
                 document.querySelectorAll('[data-lucide]').forEach(icon => {
                     icon.style.display = 'inline-block';
                     icon.style.visibility = 'visible';
-                    icon.style.color = '#3b82f6';
-                    icon.style.stroke = '#3b82f6';
+
+                    // Only apply blue color to feature and footer icons, not the success check icon
+                    const iconName = icon.getAttribute('data-lucide');
+                    if (iconName !== 'check' && iconName !== 'download') {
+                        icon.style.color = '#3b82f6';
+                        icon.style.stroke = '#3b82f6';
+                    }
                 });
 
                 // Extra force for footer links
