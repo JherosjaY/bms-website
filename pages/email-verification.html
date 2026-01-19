@@ -430,12 +430,12 @@
             <input type="text" maxlength="1" class="code-input" id="code6" autocomplete="off" disabled>
         </div>
 
-        <!-- Send/Verify Button -->
-        <button class="btn-verify" id="verifyBtn">Send</button>
+        <!-- Send/Verify/Resend Button -->
+        <button class="btn-verify" id="verifyBtn" type="button">Send</button>
 
         <!-- Resend Section -->
         <div class="resend-section" id="resendSection" style="display: none;">
-            You can resend <span id="timerText" style="color: #10b981; font-weight: 700;"></span> code.
+            Didn't receive the code? <span id="timerText" style="color: #10b981; font-weight: 700;"></span>
         </div>
     </div>
 
@@ -522,14 +522,26 @@
         function startResendTimer() {
             resendSection.style.display = 'block';
             resendTimer = 60;
+            verifyBtn.disabled = true;
 
             timerInterval = setInterval(() => {
                 resendTimer--;
-                timerText.textContent = `(${resendTimer} seconds)`;
+                timerText.textContent = `(${resendTimer}s)`;
 
                 if (resendTimer <= 0) {
                     clearInterval(timerInterval);
                     resendSection.style.display = 'none';
+
+                    // Change button to "Resend Code"
+                    verifyBtn.textContent = 'Resend Code';
+                    verifyBtn.disabled = false;
+                    codeSent = false; // Allow resending
+
+                    // Disable and clear code inputs
+                    codeInputs.forEach(input => {
+                        input.disabled = true;
+                        input.value = '';
+                    });
                 }
             }, 1000);
         }
