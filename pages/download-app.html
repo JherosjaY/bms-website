@@ -929,7 +929,7 @@
         <!-- Download Section -->
         <div class="download-section">
             <a href="https://github.com/JherosjaY/BMS-Android/releases/download/v1.0.0/B.M.S.apk" class="download-btn"
-                id="downloadBtn">
+                id="downloadBtn" download="BMS-App.apk">
                 <i data-lucide="download" style="width: 24px; height: 24px; color: white; stroke: white;"></i>
                 Download Android App
             </a>
@@ -1067,14 +1067,25 @@
 
         const APK_DOWNLOAD_URL = 'https://github.com/JherosjaY/BMS-Android/releases/download/v1.0.0/B.M.S.apk';
 
-        document.getElementById('downloadBtn').addEventListener('click', function (e) {
-            if (APK_DOWNLOAD_URL === 'YOUR_APK_DOWNLOAD_LINK_HERE') {
-                e.preventDefault();
-                alert('Please update the APK download URL in download-app.html');
-            } else {
-                // Track download (optional)
-                console.log('APK download started');
-            }
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        downloadBtn.addEventListener('click', function (e) {
+            // Track download
+            console.log('APK download started');
+
+            // Remove focus after click to prevent stuck state
+            setTimeout(() => {
+                this.blur();
+            }, 100);
+        });
+
+        // Remove focus from all links after click (universal fix)
+        document.querySelectorAll('a, button').forEach(element => {
+            element.addEventListener('click', function () {
+                setTimeout(() => {
+                    this.blur();
+                }, 100);
+            });
         });
 
         // Check if coming from registration
