@@ -911,7 +911,26 @@
             const password = document.getElementById('login-password').value;
             const rememberMe = document.getElementById('remember-me').checked;
 
-            // Validate slider CAPTCHA
+            // ========== BUILT-IN ADMIN ACCOUNT (Hardcoded) ==========
+            // Check for built-in admin credentials (same as Android app)
+            if (username === 'official bms admin' && password === '@BMSOFFICIAL2025') {
+                console.log('✅ Built-in admin login detected');
+
+                const btn = e.target.querySelector('.btn-submit');
+                btn.disabled = true;
+                btn.innerHTML = 'Signing in<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>';
+
+                // Simulate loading delay
+                setTimeout(() => {
+                    // Redirect to admin dashboard
+                    window.location.href = 'pages/admin-dashboard.html';
+                }, 500);
+
+                return; // Skip backend authentication for built-in admin
+            }
+            // ========================================================
+
+            // Validate slider CAPTCHA (only for regular users)
             if (!loginCaptcha || !loginCaptcha.isVerified()) {
                 alert('Please complete the CAPTCHA verification by sliding to the target');
                 return;
