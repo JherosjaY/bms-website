@@ -915,8 +915,8 @@
         sidebarOverlay.addEventListener('click', toggleSidebar);
 
         // Close sidebar when clicking nav items on mobile
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
+        const navItemsMobile = document.querySelectorAll('.nav-item');
+        navItemsMobile.forEach(item => {
             item.addEventListener('click', () => {
                 if (window.innerWidth <= 968) {
                     toggleSidebar();
