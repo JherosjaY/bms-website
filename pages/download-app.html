@@ -925,19 +925,19 @@
         <!-- Features -->
         <div class="features">
             <div class="feature">
-                <i data-lucide="shield-check" style="width: 32px; height: 32px;"></i>
+                <i data-lucide="shield-check" style="width: 32px; height: 32px; color: #3b82f6; stroke: #3b82f6;"></i>
                 <div class="feature-text">Secure</div>
             </div>
             <div class="feature">
-                <i data-lucide="zap" style="width: 32px; height: 32px;"></i>
+                <i data-lucide="zap" style="width: 32px; height: 32px; color: #3b82f6; stroke: #3b82f6;"></i>
                 <div class="feature-text">Fast</div>
             </div>
             <div class="feature">
-                <i data-lucide="smartphone" style="width: 32px; height: 32px;"></i>
+                <i data-lucide="smartphone" style="width: 32px; height: 32px; color: #3b82f6; stroke: #3b82f6;"></i>
                 <div class="feature-text">Mobile-First</div>
             </div>
             <div class="feature">
-                <i data-lucide="clock" style="width: 32px; height: 32px;"></i>
+                <i data-lucide="clock" style="width: 32px; height: 32px; color: #3b82f6; stroke: #3b82f6;"></i>
                 <div class="feature-text">Real-time</div>
             </div>
         </div>
@@ -983,13 +983,15 @@
         </div>
 
         <!-- Footer Links -->
-        <div class="footer-links">
-            <a href="../auth.html" class="footer-link">
-                <i data-lucide="log-in" style="width: 16px; height: 16px;"></i>
+        <div class="footer-links" style="display: flex !important; visibility: visible !important;">
+            <a href="../auth.html" class="footer-link"
+                style="display: flex !important; visibility: visible !important;">
+                <i data-lucide="log-in" style="width: 16px; height: 16px; color: #3b82f6; stroke: #3b82f6;"></i>
                 Back to Login
             </a>
-            <a href="../index.html" class="footer-link">
-                <i data-lucide="home" style="width: 16px; height: 16px;"></i>
+            <a href="../index.html" class="footer-link"
+                style="display: flex !important; visibility: visible !important;">
+                <i data-lucide="home" style="width: 16px; height: 16px; color: #3b82f6; stroke: #3b82f6;"></i>
                 Home
             </a>
         </div>
@@ -1019,10 +1021,19 @@
                     footer.style.visibility = 'visible';
                 }
 
-                // Force all icons to be visible
+                // Force all icons to be visible with blue color
                 document.querySelectorAll('[data-lucide]').forEach(icon => {
                     icon.style.display = 'inline-block';
                     icon.style.visibility = 'visible';
+                    icon.style.color = '#3b82f6';
+                    icon.style.stroke = '#3b82f6';
+                });
+
+                // Extra force for footer links
+                document.querySelectorAll('.footer-link').forEach(link => {
+                    link.style.display = 'flex';
+                    link.style.visibility = 'visible';
+                    link.style.opacity = '1';
                 });
             }, 100);
         });
