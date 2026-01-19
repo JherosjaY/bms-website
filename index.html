@@ -3,18 +3,1456 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=auth.html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blotter Management System</title>
-    <script>
-        // Immediate redirect to authentication page
-        window.location.href = 'auth.html';
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description"
+        content="Modern Blotter Management System - Streamline incident reporting and case management">
+    <title>Blotter Management System - Professional Incident Reporting</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: url('assets/cursors/Normal.cur'), auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            position: relative;
+            overflow: hidden;
+            padding: var(--space-xl);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+            top: -300px;
+            right: -300px;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            bottom: -250px;
+            left: -250px;
+            animation: pulse 10s ease-in-out infinite;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto var(--space-xl);
+            animation: fadeIn 1.2s ease-out, float 3s ease-in-out infinite;
+        }
+
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: var(--space-lg);
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeIn 1.4s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-2xl);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1.6s ease-out;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--space-lg);
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeIn 1.8s ease-out;
+        }
+
+        .btn-hero {
+            padding: var(--space-lg) var(--space-2xl);
+            font-size: var(--text-lg);
+            font-weight: 700;
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+            z-index: 2;
+        }
+
+        .btn-hero-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Statistics Section */
+        .stats-section {
+            padding: var(--space-2xl) var(--space-xl);
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: var(--space-lg);
+            transition: transform var(--transition);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: var(--text-base);
+            font-weight: 600;
+        }
+
+        /* Features Section */
+        .features {
+            padding: var(--space-2xl) var(--space-xl);
+            background: var(--bg-secondary);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: var(--space-xl);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-xl);
+            margin-top: var(--space-2xl);
+        }
+
+        .feature-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-lg);
+            transition: transform var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-md);
+            color: var(--primary-light);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Fade-in Animation */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: var(--space-2xl) var(--space-xl);
+            background: var(--bg-primary);
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: var(--text-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .testimonial-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            transition: all var(--transition);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .testimonial-card h4 {
+            margin: 0;
+            font-size: var(--text-lg);
+            color: var(--text-primary);
+        }
+
+        .testimonial-role {
+            margin: 0;
+            font-size: var(--text-sm);
+            color: var(--text-tertiary);
+        }
+
+        .testimonial-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-lg);
+            font-style: italic;
+        }
+
+        .testimonial-rating {
+            font-size: var(--text-lg);
+        }
+
+        /* Fade-in Animation */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: var(--space-2xl) var(--space-xl);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-lg);
+            color: white;
+        }
+
+        .cta p {
+            font-size: 1.25rem;
+            margin-bottom: var(--space-xl);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Footer */
+        .footer {
+            padding: var(--space-xl);
+            background: var(--bg-primary);
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer p {
+            color: var(--text-tertiary);
+            font-size: var(--text-sm);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn-hero {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Sticky Header */
+        .sticky-header {
+            position: fixed;
+            top: -100px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            transition: top 0.3s ease-in-out;
+        }
+
+        .sticky-header.visible {
+            top: 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .header-logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .header-logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .header-nav a:not(.header-cta) {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        .header-nav a:not(.header-cta)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .header-nav a:not(.header-cta):hover {
+            color: var(--primary);
+        }
+
+        .header-nav a:not(.header-cta):hover::after {
+            width: 100%;
+        }
+
+        .header-cta {
+            padding: 0.625rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--radius-lg);
+            font-weight: 700;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Footer Link Hover */
+        .footer a:hover span span {
+            width: 100% !important;
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* About Us Card Hover Effects (All Devices) */
+        #about>div>div {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #about>div>div:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Center About Us content on all devices */
+        #about>div>div {
+            text-align: center;
+        }
+
+        #about>div>div>div[style*="border-radius: 50%"] {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+
+            /* Show hamburger menu */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Hide desktop navigation */
+            .header-nav {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+                flex-direction: column;
+                padding: 80px 2rem 2rem;
+                gap: 1.5rem;
+                transition: left 0.3s ease;
+                z-index: 1000;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+                justify-content: center;
+            }
+
+            .header-nav.active {
+                left: 0;
+            }
+
+            .header-nav a {
+                font-size: 1.2rem;
+                padding: 1rem;
+                border-radius: 8px;
+                transition: background 0.3s;
+            }
+
+            .header-nav a:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .header-cta {
+                margin-top: 1rem;
+                text-align: center;
+            }
+
+            /* Hero section */
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-hero {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Statistics - single column */
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            /* Features - single column */
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Testimonials - single column */
+            .testimonials-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* How to File section - vertical layout */
+            .how-to-grid {
+                grid-template-columns: 1fr !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            /* Video appears first on mobile */
+            .how-to-grid>*:first-child {
+                order: 1 !important;
+            }
+
+            /* Steps appear below video */
+            .how-to-grid>*:last-child {
+                order: 2 !important;
+            }
+
+            /* Footer - centered on mobile */
+            .footer-content {
+                grid-template-columns: 1fr !important;
+                text-align: center !important;
+            }
+
+            /* Center footer sections */
+            .footer-section {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            /* Center footer logo and title */
+            .footer-logo {
+                margin: 0 auto !important;
+            }
+
+            /* Center footer headings */
+            footer h4 {
+                text-align: center !important;
+            }
+
+            /* Center all footer divs and links */
+            footer div {
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            footer a {
+                justify-content: center !important;
+            }
+
+            /* Center footer lists */
+            footer ul,
+            footer li {
+                text-align: center !important;
+                list-style-position: inside !important;
+            }
+
+            /* Center hero section content */
+            .hero {
+                text-align: center !important;
+            }
+
+            .hero-content {
+                align-items: center !important;
+            }
+
+            /* Center features section */
+            .features-section {
+                text-align: center !important;
+            }
+
+            /* Center feature cards */
+            .feature-card,
+            .feature {
+                text-align: center !important;
+                align-items: center !important;
+            }
+
+            /* Center feature icons */
+            .feature-card i,
+            .feature i {
+                margin: 0 auto !important;
+            }
+
+            /* Center About section */
+            section[style*="About"] {
+                text-align: center !important;
+            }
+
+            /* Center all section headings */
+            section h2,
+            section h3 {
+                text-align: center !important;
+            }
+
+            /* Center About section icon containers */
+            section div[style*="border-radius: 50%"] {
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+
+            /* Center all card content in About section */
+            section[style*="padding: 4rem"]>div>div {
+                text-align: center !important;
+            }
+
+            /* Keep How to File step text left-aligned */
+            #how-to h3,
+            #how-to p {
+                text-align: left !important;
+            }
+
+            /* About Us card hover effects */
+            #about>div>div {
+                transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+            }
+
+            #about>div>div:hover {
+                transform: translateY(-8px) !important;
+                box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3) !important;
+            }
+
+            /* Reduce padding */
+            section {
+                padding: 3rem 1rem !important;
+            }
+
+            /* Sticky header adjustments */
+            .sticky-header {
+                padding: 1rem;
+            }
+        }
+
+        /* Tablet responsive (769px - 1024px) */
+        @media (max-width: 1024px) and (min-width: 769px) {
+
+            /* Testimonials - 2 columns */
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            /* Statistics - 2 columns */
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Features - 2 columns */
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* How to File - 2 columns for steps */
+            .how-to-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Footer - 2 columns */
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Reduce hero text size slightly */
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .hero p {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <p>Redirecting to Blotter Management System...</p>
-    <p>If you are not redirected, <a href="auth.html">click here</a>.</p>
+    <!-- Sticky Header -->
+    <header class="sticky-header" id="stickyHeader">
+        <div class="header-container">
+            <!-- Hamburger Menu Button -->
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <a href="#" class="header-logo">
+                <img src="assets/app-icon.png" alt="BMS">
+                <span class="header-logo-text">BMS</span>
+            </a>
+            <nav class="header-nav" id="headerNav">
+                <a href="#features">Features</a>
+                <a href="#how-to">How to File</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="auth.html" class="header-cta">Get Started</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="assets/app-icon.png" alt="Blotter Management System">
+            </div>
+
+            <h1>Blotter Management System</h1>
+
+            <p>
+                Modern, efficient, and secure incident reporting and case management for law enforcement agencies
+            </p>
+
+            <div class="hero-buttons">
+                <a href="auth.html" class="btn-hero btn-hero-primary">
+                    <span>Get Started</span>
+                    <span>→</span>
+                </a>
+                <a href="#features" class="btn-hero btn-hero-secondary">
+                    <span>Learn More</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section fade-in-section" style="padding: 4rem 2rem;">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number" data-target="1500">0</div>
+                <div class="stat-label">Reports Processed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="250">0</div>
+                <div class="stat-label">Active Officers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="95">0</div>
+                <div class="stat-label">Resolution Rate %</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="50">0</div>
+                <div class="stat-label">Barangays Served</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features fade-in-section" id="features" style="padding: 4rem 2rem;">
+        <div class="features-container">
+            <h2>Powerful Features</h2>
+
+            <div class="features-grid">
+                <div class="feature-card fade-in-section">
+                    <div class="feature-icon"><i data-lucide="file-text"
+                            style="width: 48px; height: 48px; color: var(--primary);"></i></div>
+                    <h3>Incident Reporting</h3>
+                    <p>Streamlined incident report creation with comprehensive case tracking and status management.</p>
+                </div>
+
+                <div class="feature-card fade-in-section">
+                    <div class="feature-icon"><i data-lucide="shield-check"
+                            style="width: 48px; height: 48px; color: var(--primary);"></i></div>
+                    <h3>Officer Management</h3>
+                    <p>Efficient officer assignment, activity tracking, and performance monitoring.</p>
+                </div>
+
+                <div class="feature-card fade-in-section">
+                    <div class="feature-icon"><i data-lucide="calendar"
+                            style="width: 48px; height: 48px; color: var(--primary);"></i></div>
+                    <h3>Hearing Scheduling</h3>
+                    <p>Automated hearing schedules with notifications and calendar integration.</p>
+                </div>
+
+                <div class="feature-card fade-in-section">
+                    <div class="feature-icon"><i data-lucide="scale"
+                            style="width: 48px; height: 48px; color: var(--primary);"></i></div>
+                    <h3>Case Resolution</h3>
+                    <p>Track case outcomes, resolutions, and maintain comprehensive records.</p>
+                </div>
+
+                <div class="feature-card fade-in-section">
+                    <div class="feature-icon"><i data-lucide="bar-chart-3"
+                            style="width: 48px; height: 48px; color: var(--primary);"></i></div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Real-time statistics, insights, and data visualization for informed decision-making.</p>
+                </div>
+
+                <div class="feature-card fade-in-section">
+                    <div class="feature-icon"><i data-lucide="bell"
+                            style="width: 48px; height: 48px; color: var(--primary);"></i></div>
+                    <h3>Notifications</h3>
+                    <p>Instant alerts for case updates, hearings, and important events via email and push notifications.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How-To Video Section -->
+    <section class="how-to-section fade-in-section" id="how-to"
+        style="padding: 4rem 2rem; background: var(--bg-secondary);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 1rem;">How to File a Case</h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 1.125rem; margin-bottom: 3rem;">
+                Follow these simple steps to report an incident</p>
+
+            <!-- Container with background -->
+            <div
+                style="background: var(--bg-primary); border-radius: 1.5rem; padding: 2.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); border: 1px solid var(--border);">
+                <div class="how-to-grid"
+                    style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 2.5rem; align-items: center;">
+                    <!-- Video on Left with 16:9 aspect ratio -->
+                    <div
+                        style="position: relative; border-radius: 1rem; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); background: #000; width: 100%; aspect-ratio: 16/9;">
+                        <video controls style="width: 100%; height: 100%; display: block; object-fit: contain;">
+                            <source src="assets/demo-video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <!-- Steps on Right - Compact layout -->
+                    <div style="display: flex; flex-direction: column; gap: 1rem; justify-content: center;">
+                        <div class="fade-in-section"
+                            style="display: flex; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 0.75rem; transition: all 0.3s; align-items: center;">
+                            <div
+                                style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: white;">
+                                1</div>
+                            <div>
+                                <h3 style="margin: 0 0 0.25rem 0; font-size: 1rem; color: var(--primary-light);">Login
+                                    to
+                                    Your Account</h3>
+                                <p
+                                    style="margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.875rem;">
+                                    Access the system using your credentials. If you don't have an account, register
+                                    first.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="fade-in-section"
+                            style="display: flex; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 0.75rem; transition: all 0.3s; align-items: center;">
+                            <div
+                                style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: white;">
+                                2</div>
+                            <div>
+                                <h3 style="margin: 0 0 0.25rem 0; font-size: 1rem; color: var(--primary-light);">
+                                    Navigate to
+                                    Reports</h3>
+                                <p
+                                    style="margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.875rem;">
+                                    Click on the "Reports" menu from the sidebar or dashboard.</p>
+                            </div>
+                        </div>
+
+                        <div class="fade-in-section"
+                            style="display: flex; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 0.75rem; transition: all 0.3s; align-items: center;">
+                            <div
+                                style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: white;">
+                                3</div>
+                            <div>
+                                <h3 style="margin: 0 0 0.25rem 0; font-size: 1rem; color: var(--primary-light);">Fill
+                                    Out
+                                    the Form</h3>
+                                <p
+                                    style="margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.875rem;">
+                                    Provide incident details including type, location, date, and description.</p>
+                            </div>
+                        </div>
+
+                        <div class="fade-in-section"
+                            style="display: flex; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 0.75rem; transition: all 0.3s; align-items: center;">
+                            <div
+                                style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: white;">
+                                4</div>
+                            <div>
+                                <h3 style="margin: 0 0 0.25rem 0; font-size: 1rem; color: var(--primary-light);">Upload
+                                    Evidence</h3>
+                                <p
+                                    style="margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.875rem;">
+                                    Attach photos, videos, or documents related to the incident (optional).</p>
+                            </div>
+                        </div>
+
+                        <div class="fade-in-section"
+                            style="display: flex; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 0.75rem; transition: all 0.3s; align-items: center;">
+                            <div
+                                style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: white;">
+                                5</div>
+                            <div>
+                                <h3 style="margin: 0 0 0.25rem 0; font-size: 1rem; color: var(--primary-light);">Submit
+                                    &
+                                    Track</h3>
+                                <p
+                                    style="margin: 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.875rem;">
+                                    Submit your report and receive a case number. Track progress in real-time.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="fade-in-section" style="padding: 4rem 2rem; max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">About Us</h2>
+            <p style="color: var(--text-secondary); font-size: 1.125rem; max-width: 700px; margin: 0 auto;">Learn more
+                about our mission to modernize law enforcement case management</p>
+        </div>
+
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+            <!-- Mission -->
+            <div
+                style="background: var(--bg-secondary); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+                <div
+                    style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                    <i data-lucide="target" style="width: 30px; height: 30px; color: white;"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Our Mission</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">To provide law enforcement agencies with
+                    modern, efficient, and secure tools for incident reporting and case management, streamlining
+                    operations and improving community safety.</p>
+            </div>
+
+            <!-- Vision -->
+            <div
+                style="background: var(--bg-secondary); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+                <div
+                    style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                    <i data-lucide="eye" style="width: 30px; height: 30px; color: white;"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Our Vision</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">To become the leading platform for digital
+                    case management in law enforcement, empowering officers with technology that makes their work easier
+                    and more effective.</p>
+            </div>
+
+            <!-- Values -->
+            <div
+                style="background: var(--bg-secondary); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+                <div
+                    style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                    <i data-lucide="heart" style="width: 30px; height: 30px; color: white;"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Our Values</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">Security, transparency, and user-focused
+                    design are at the core of everything we do. We're committed to building trust through reliable and
+                    accessible technology.</p>
+            </div>
+        </div>
+
+        <!-- Team/Stats -->
+        <div
+            style="background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 3rem 2rem; border-radius: var(--radius-lg); text-align: center;">
+            <h3 style="font-size: 2rem; font-weight: 800; color: white; margin-bottom: 2rem;">Why Choose BMS?</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                <div>
+                    <div style="font-size: 3rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">100%</div>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.125rem;">Secure & Encrypted</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">24/7</div>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.125rem;">Support Available</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">Fast</div>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.125rem;">Real-time Updates</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials fade-in-section" id="testimonials">
+        <div class="testimonials-container">
+            <h2>Trusted by Law Enforcement Professionals</h2>
+            <p class="section-subtitle">See what our users have to say about the system</p>
+
+            <div class="testimonials-grid"
+                style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); justify-items: center;">
+                <div class="testimonial-card fade-in-section">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar" style="background: none; padding: 0; overflow: hidden;">
+                            <img src="assets/officer1.png" style="width: 100%; height: 100%; object-fit: cover;"
+                                alt="Wawie">
+                        </div>
+                        <div>
+                            <h4>Wawie Renz Timo-An</h4>
+                            <p class="testimonial-role">Chief of Police, Barangay Lantapan</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"This system has revolutionized how we manage incident reports. The
+                        automated workflows and real-time notifications have significantly improved our response times."
+                    </p>
+                    <div class="testimonial-rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card fade-in-section">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <i data-lucide="user" style="width: 24px; height: 24px;"></i>
+                        </div>
+                        <div>
+                            <h4>Rogene Parreño</h4>
+                            <p class="testimonial-role">Desk Officer, Barangay Busco</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The interface is intuitive and easy to use. I can file reports in
+                        minutes instead of hours. The mobile app is a game-changer for field officers."</p>
+                    <div class="testimonial-rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card fade-in-section">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar" style="background: none; padding: 0; overflow: hidden;">
+                            <img src="assets/officer3.png" style="width: 100%; height: 100%; object-fit: cover;"
+                                alt="Dolf">
+                        </div>
+                        <div>
+                            <h4>Dolf Jiff Pacapat</h4>
+                            <p class="testimonial-role">Station Commander, Barangay Sugod</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The analytics dashboard provides valuable insights into crime patterns.
+                        We can now make data-driven decisions to better serve our community."</p>
+                    <div class="testimonial-rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card fade-in-section">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar" style="background: none; padding: 0; overflow: hidden;">
+                            <img src="assets/suspect.png" style="width: 100%; height: 100%; object-fit: cover;"
+                                alt="Suspect">
+                        </div>
+                        <div>
+                            <h4>John Francis Jone</h4>
+                            <p class="testimonial-role">Recently Apprehended</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Na dakpan naming Ajrah da! Ge mingaw nako niya samoang mga KIAT-KIAT!"
+                    </p>
+                    <div class="testimonial-rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Spacing before footer -->
+    <div style="height: 120px;"></div>
+
+    <!-- Footer -->
+    <footer class="footer fade-in-section"
+        style="position: relative; background: linear-gradient(135deg, #3b82f6 0%, #38bdf8 100%); margin-top: 0;">
+        <!-- Wave Divider -->
+        <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 120px; transform: translateY(-119px);"
+            viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,60 C150,100 350,20 600,60 C850,100 1050,20 1200,60 L1200,120 L0,120 Z"
+                fill="url(#footerGradient)" />
+            <defs>
+                <linearGradient id="footerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#38bdf8;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 2rem 1.5rem 2rem;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 2rem;">
+                <!-- About Section -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <img src="assets/app-icon.png" alt="BMS" style="width: 40px; height: 40px;">
+                        <h3 style="font-size: 1.25rem; font-weight: 800; color: white; margin: 0;">BMS</h3>
+                    </div>
+                    <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.6;">Modern, efficient, and secure incident
+                        reporting and case management for law enforcement agencies.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 700; text-align: left;">Quick Links
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start;">
+                        <a href="#features"
+                            style="color: rgba(255, 255, 255, 0.9); text-decoration: none; transition: color 0.3s; display: inline-block; width: fit-content; text-align: left; position: relative; padding-bottom: 0.25rem;">
+                            <span style="position: relative;">Features
+                                <span
+                                    style="position: absolute; bottom: -0.25rem; left: 0; width: 0; height: 2px; background: white; transition: width 0.3s ease;"></span>
+                            </span>
+                        </a>
+                        <a href="#how-to"
+                            style="color: rgba(255, 255, 255, 0.9); text-decoration: none; transition: color 0.3s; display: inline-block; width: fit-content; text-align: left; position: relative; padding-bottom: 0.25rem;">
+                            <span style="position: relative;">How to File
+                                <span
+                                    style="position: absolute; bottom: -0.25rem; left: 0; width: 0; height: 2px; background: white; transition: width 0.3s ease;"></span>
+                            </span>
+                        </a>
+                        <a href="#testimonials"
+                            style="color: rgba(255, 255, 255, 0.9); text-decoration: none; transition: color 0.3s; display: inline-block; width: fit-content; text-align: left; position: relative; padding-bottom: 0.25rem;">
+                            <span style="position: relative;">Testimonials
+                                <span
+                                    style="position: absolute; bottom: -0.25rem; left: 0; width: 0; height: 2px; background: white; transition: width 0.3s ease;"></span>
+                            </span>
+                        </a>
+                        <a href="auth.html"
+                            style="color: rgba(255, 255, 255, 0.9); text-decoration: none; transition: color 0.3s; display: inline-block; width: fit-content; text-align: left; position: relative; padding-bottom: 0.25rem;">
+                            <span style="position: relative;">Login
+                                <span
+                                    style="position: absolute; bottom: -0.25rem; left: 0; width: 0; height: 2px; background: white; transition: width 0.3s ease;"></span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Connect -->
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 700; text-align: left;">Connect With Us
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+                        <a href="https://www.facebook.com/share/1HeBpkvBUg/" target="_blank" rel="noopener noreferrer"
+                            style="display: inline-flex; align-items: center; gap: 0.5rem; color: rgba(255, 255, 255, 0.9); text-decoration: none; transition: all 0.3s; width: fit-content; text-align: left;">
+                            <i data-lucide="facebook" style="width: 20px; height: 20px; color: white;"></i>
+                            <span>Jheros Jay</span>
+                        </a>
+                        <div
+                            style="display: inline-flex; align-items: center; gap: 0.5rem; color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; text-align: left;">
+                            <i data-lucide="mail" style="width: 16px; height: 16px;"></i>
+                            <span>official.bms.2025@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div
+                style="border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 1.5rem; margin-top: 1.5rem; text-align: center;">
+                <p style="color: rgba(255, 255, 255, 0.9); margin: 0;">&copy; 2026 Blotter Management System. All rights
+                    reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Animated counters for statistics
+        let hasAnimated = false;
+
+        const animateCounter = (element) => {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    element.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            };
+
+            updateCounter();
+        };
+
+        // Scroll-triggered animation
+        window.addEventListener('scroll', () => {
+            if (hasAnimated) return;
+
+            const statsSection = document.querySelector('.stats-section');
+            if (!statsSection) return;
+
+            const rect = statsSection.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight - 100;
+
+            if (isVisible) {
+                hasAnimated = true;
+                const statNumbers = statsSection.querySelectorAll('.stat-number');
+                statNumbers.forEach(num => animateCounter(num));
+            }
+        });
+
+        // Sticky header on scroll
+        const stickyHeader = document.getElementById('stickyHeader');
+        if (stickyHeader) {
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+
+                // Show header after scrolling down 300px
+                if (currentScroll > 300) {
+                    stickyHeader.classList.add('visible');
+                } else {
+                    stickyHeader.classList.remove('visible');
+                }
+            });
+        }
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+
+    <script>
+        // Fade-in animation on scroll
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Observe all fade-in sections
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            fadeInObserver.observe(section);
+        });
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const headerNav = document.getElementById('headerNav');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            headerNav.classList.toggle('active');
+
+            // Disable/enable body scroll when sidebar is open/closed
+            if (headerNav.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.header-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                headerNav.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !headerNav.contains(e.target)) {
+                hamburger.classList.remove('active');
+                headerNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Auto-close sidebar when scrolling to top
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // If scrolled to top (within 50px) and sidebar is open
+            if (scrollTop < 50 && headerNav.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                headerNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            lastScrollTop = scrollTop;
+        });
+    </script>
 </body>
 
 </html>
