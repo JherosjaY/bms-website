@@ -1086,6 +1086,16 @@
                     this.blur();
                 }, 100);
             });
+
+            // Mobile-specific: Remove focus on touchend
+            element.addEventListener('touchend', function () {
+                this.blur();
+            });
+
+            // Extra: Remove focus on touchcancel
+            element.addEventListener('touchcancel', function () {
+                this.blur();
+            });
         });
 
         // Check if coming from registration
