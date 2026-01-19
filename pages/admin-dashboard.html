@@ -948,37 +948,156 @@
             });
         });
 
-        // Mock data (replace with actual API calls)
-        const mockUsers = [
-            { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Citizen', status: 'Active', joined: '2024-01-15' },
-            { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Citizen', status: 'Active', joined: '2024-01-20' },
-            { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'Officer', status: 'Active', joined: '2024-01-10' },
-            { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', role: 'Citizen', status: 'Inactive', joined: '2024-01-25' },
-            { id: 5, name: 'Tom Brown', email: 'tom@example.com', role: 'Admin', status: 'Active', joined: '2024-01-05' },
-        ];
 
-        const mockReports = [
-            { id: 1, title: 'Theft Report', status: 'Pending', date: '2024-01-20', officer: 'Mike Johnson', priority: 'High' },
-            { id: 2, title: 'Noise Complaint', status: 'In Progress', date: '2024-01-19', officer: 'Jane Smith', priority: 'Low' },
-            { id: 3, title: 'Vandalism', status: 'Resolved', date: '2024-01-18', officer: 'Mike Johnson', priority: 'Medium' },
-            { id: 4, title: 'Assault Case', status: 'Pending', date: '2024-01-21', officer: 'Unassigned', priority: 'High' },
-            { id: 5, title: 'Traffic Violation', status: 'Resolved', date: '2024-01-17', officer: 'Jane Smith', priority: 'Low' },
-        ];
+        // ========== REAL-TIME DATA FROM BACKEND ==========
+        // API Base URL (same as api.js)
+        const API_BASE_URL = 'https://bms-backend.onrender.com/api';
 
-        const mockOfficers = [
-            { id: 1, name: 'Mike Johnson', badge: 'B-1234', department: 'Patrol', status: 'Active', cases: 15 },
-            { id: 2, name: 'Jane Smith', badge: 'B-5678', department: 'Investigation', status: 'Active', cases: 23 },
-            { id: 3, name: 'Robert Davis', badge: 'B-9012', department: 'Traffic', status: 'Active', cases: 8 },
-            { id: 4, name: 'Emily Wilson', badge: 'B-3456', department: 'Investigation', status: 'On Leave', cases: 12 },
-            { id: 5, name: 'David Martinez', badge: 'B-7890', department: 'Patrol', status: 'Active', cases: 19 },
-        ];
+        // Global data storage
+        let allUsers = [];
+        let allReports = [];
+        let allOfficers = [];
+        let dashboardStats = {};
 
-        // Update stats
-        function updateStats() {
-            document.getElementById('totalUsers').textContent = mockUsers.length;
-            document.getElementById('activeReports').textContent = mockReports.filter(r => r.status !== 'Resolved').length;
-            document.getElementById('totalOfficers').textContent = mockOfficers.length;
-            document.getElementById('resolvedCases').textContent = mockReports.filter(r => r.status === 'Resolved').length;
+        // Fetch dashboard stats from backend
+        async function fetchDashboardStats() {
+            try {
+                console.log('📊 Fetching dashboard stats...');
+                const response = await fetch(`${API_BASE_URL}/admin/dashboard/stats`);
+                const data = await response.json();
+
+                if (data.success) {
+                    dashboardStats = data.data;
+                    updateStatsCards(dashboardStats);
+                    console.log('✅ Dashboard stats loaded:', dashboardStats);
+                } else {
+                    console.error('❌ Failed to fetch stats:', data.message);
+                }
+            } catch (error) {
+                console.error('❌ Error fetching dashboard stats:', error);
+                // Show error state
+                document.getElementById('totalUsers').textContent = '0';
+                document.getElementById('activeReports').textContent = '0';
+                document.getElementById('totalOfficers').textContent = '0';
+                document.getElementById('resolvedCases').textContent = '0';
+            }
+        }
+
+        // Fetch all users from backend
+        async function fetchUsers() {
+            try {
+                console.log('👥 Fetching users...');
+                const response = await fetch(`${API_BASE_URL}/admin/users`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allUsers = data.data.map(user => ({
+                        id: user.id,
+                        name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username,
+                        email: user.email,
+                        role: user.role || 'Citizen',
+                        status: user.isActive ? 'Active' : 'Inactive',
+                        joined: new Date(user.createdAt).toLocaleDateString()
+                    }));
+                    console.log(`✅ Loaded ${allUsers.length} users`);
+                    return allUsers;
+                } else {
+                    console.error('❌ Failed to fetch users:', data.message);
+                    return [];
+                }
+            } catch (error) {
+                console.error('❌ Error fetching users:', error);
+                return [];
+            }
+        }
+
+        // Fetch all reports from backend
+        async function fetchReports() {
+            try {
+                console.log('📋 Fetching reports...');
+                const response = await fetch(`${API_BASE_URL}/reports`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allReports = data.data.map(report => ({
+                        id: report.id,
+                        title: report.incidentType || 'Unknown',
+                        status: report.status || 'Pending',
+                        date: new Date(report.dateFiled).toLocaleDateString(),
+                        officer: report.assignedOfficer || 'Unassigned',
+                        priority: report.priority || 'Medium'
+                    }));
+                    console.log(`✅ Loaded ${allReports.length} reports`);
+                    return allReports;
+                } else {
+                    console.error('❌ Failed to fetch reports:', data.message);
+                    return [];
+                }
+            } catch (error) {
+                console.error('❌ Error fetching reports:', error);
+                return [];
+            }
+        }
+
+        // Fetch all officers from backend
+        async function fetchOfficers() {
+            try {
+                console.log('👮 Fetching officers...');
+                const response = await fetch(`${API_BASE_URL}/reports/on-duty-officers`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allOfficers = data.data.map(officer => ({
+                        id: officer.id,
+                        name: officer.name,
+                        badge: officer.badgeNumber || 'N/A',
+                        department: officer.department || 'General',
+                        status: officer.dutyStatus || 'Active',
+                        cases: 0 // TODO: Calculate from reports
+                    }));
+                    console.log(`✅ Loaded ${allOfficers.length} officers`);
+                    return allOfficers;
+                } else {
+                    console.error('❌ Failed to fetch officers:', data.message);
+                    return [];
+                }
+            } catch (error) {
+                console.error('❌ Error fetching officers:', error);
+                return [];
+            }
+        }
+
+        // Update stats cards with real data
+        function updateStatsCards(stats) {
+            document.getElementById('totalUsers').textContent = stats.totalUsers || 0;
+            document.getElementById('activeReports').textContent = stats.pendingReports || 0;
+            document.getElementById('totalOfficers').textContent = stats.totalOfficers || 0;
+            document.getElementById('resolvedCases').textContent = (stats.totalReports - stats.pendingReports) || 0;
+        }
+
+        // Auto-refresh data every 30 seconds
+        let refreshInterval;
+        function startAutoRefresh() {
+            refreshInterval = setInterval(async () => {
+                console.log('🔄 Auto-refreshing data...');
+                await fetchDashboardStats();
+                // Refresh current view
+                const activeView = document.querySelector('.nav-item.active')?.dataset.view;
+                if (activeView) {
+                    await loadViewData(activeView);
+                }
+            }, 30000); // 30 seconds
+        }
+
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        }
+
+        // Update stats (legacy function - now calls fetchDashboardStats)
+        async function updateStats() {
+            await fetchDashboardStats();
         }
 
         // Render users table
@@ -1185,22 +1304,26 @@
             lucide.createIcons();
         }
 
-        // Load view data
-        function loadViewData(view) {
-            setTimeout(() => {
+        // Load data for each view
+        async function loadViewData(view) {
+            setTimeout(async () => {
                 switch (view) {
                     case 'dashboard':
-                        updateStats();
-                        renderUsersTable(mockUsers.slice(0, 5), 'usersTableContainer');
+                        await fetchDashboardStats();
+                        const recentUsers = await fetchUsers();
+                        renderUsersTable(recentUsers.slice(0, 5), 'usersTableContainer');
                         break;
                     case 'users':
-                        renderUsersTable(mockUsers, 'allUsersTableContainer');
+                        const users = await fetchUsers();
+                        renderUsersTable(users, 'allUsersTableContainer');
                         break;
                     case 'reports':
-                        renderReportsTable(mockReports, 'reportsTableContainer');
+                        const reports = await fetchReports();
+                        renderReportsTable(reports, 'reportsTableContainer');
                         break;
                     case 'officers':
-                        renderOfficersTable(mockOfficers, 'officersTableContainer');
+                        const officers = await fetchOfficers();
+                        renderOfficersTable(officers, 'officersTableContainer');
                         break;
                 }
             }, 500);
@@ -1209,7 +1332,7 @@
         // Search functionality
         document.getElementById('searchUsers')?.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const filtered = mockUsers.filter(user =>
+            const filtered = allUsers.filter(user =>
                 user.name.toLowerCase().includes(query) ||
                 user.email.toLowerCase().includes(query)
             );
@@ -1218,7 +1341,7 @@
 
         document.getElementById('searchAllUsers')?.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const filtered = mockUsers.filter(user =>
+            const filtered = allUsers.filter(user =>
                 user.name.toLowerCase().includes(query) ||
                 user.email.toLowerCase().includes(query)
             );
@@ -1227,7 +1350,7 @@
 
         document.getElementById('searchReports')?.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const filtered = mockReports.filter(report =>
+            const filtered = allReports.filter(report =>
                 report.title.toLowerCase().includes(query) ||
                 report.officer.toLowerCase().includes(query)
             );
@@ -1236,15 +1359,18 @@
 
         document.getElementById('searchOfficers')?.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const filtered = mockOfficers.filter(officer =>
+            const filtered = allOfficers.filter(officer =>
                 officer.name.toLowerCase().includes(query) ||
                 officer.badge.toLowerCase().includes(query)
             );
             renderOfficersTable(filtered, 'officersTableContainer');
         });
 
-        // Initialize dashboard
-        loadViewData('dashboard');
+        // Initialize dashboard with real data
+        (async () => {
+            await loadViewData('dashboard');
+            startAutoRefresh(); // Start auto-refresh
+        })();
     </script>
 </body>
 
